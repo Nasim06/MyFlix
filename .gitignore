@@ -1,0 +1,11 @@
+# Pipenv virtual environment
+.venv/
+
+# Node modules
+node_modules/
+
+# Python bytecode files
+*.pyc
+
+# Static files
+static/*
