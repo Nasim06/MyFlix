@@ -9,3 +9,6 @@ node_modules/
 
 # Static files
 static/*
+
+#localInfo
+local_settings.py
