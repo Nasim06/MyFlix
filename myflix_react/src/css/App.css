@@ -1,0 +1,14 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+  background-color:#f9e3d1;
+}
+
+.Logo {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  height: 200px;
+  width: auto;
+}
+
