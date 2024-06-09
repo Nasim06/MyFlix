@@ -10,6 +10,7 @@ import RootLayout from './layouts/RootLayout'
 import Landing from './pages/Landing'
 import Movies from './pages/Movies'
 import Profile from './pages/Profile'
+import MyList from './pages/MyList'
 
 // router and routes
 const router = createBrowserRouter(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       <Route index element={<Landing />} />
       <Route path="Movies" element={<Movies />} />
       <Route path="Profile" element={<Profile />} />
+      <Route path="MyList" element={<MyList />} />
     </Route>
   )
 )

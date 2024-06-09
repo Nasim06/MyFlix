@@ -1,11 +1,10 @@
-import {Button, Center, Flex, HStack, Image, List, ListIcon, ListItem, Spacer, Text} from "@chakra-ui/react";
+import {Button, Flex, HStack, Image, List, ListIcon, ListItem, Spacer} from "@chakra-ui/react";
 import ToggleMode from "./ToggleMode";
-import { useColorModeValue } from "@chakra-ui/react";
 import colorScheme from "../utils";
 import { NavLink } from "react-router-dom";
 import { BiCameraMovie } from "react-icons/bi";
 
-
+ 
 export default function Navbar() {
     const colorscheme = colorScheme();
     return (
@@ -24,8 +23,8 @@ export default function Navbar() {
                         </NavLink>
                     </ListItem>
                     <ListItem>
-                        <NavLink to="/Profile">
-                            Profile
+                        <NavLink to="/MyList">
+                            MyList
                         </NavLink>
                     </ListItem>
                 </HStack>

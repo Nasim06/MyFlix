@@ -9,8 +9,11 @@ class MovieResource(resources.ModelResource):
         model = Movie
 
 @admin.register(Movie)
-class MovieAdmin(ImportExportModelAdmin):  # Use ImportExportModelAdmin
-    resource_class = MovieResource 
+class MovieAdmin(ImportExportModelAdmin): 
+    resource_class = MovieResource
+
+class MovieFilterAdmin(admin.ModelAdmin):
+    search_fields = ("title")
 
 admin.site.register(Genre)
 

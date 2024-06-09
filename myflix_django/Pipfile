@@ -10,6 +10,7 @@ mysqlclient = "*"
 django-import-export = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
