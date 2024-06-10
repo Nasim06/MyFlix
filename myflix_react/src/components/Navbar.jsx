@@ -1,6 +1,6 @@
 import {Button, Flex, HStack, Image, List, ListIcon, ListItem, Spacer} from "@chakra-ui/react";
 import ToggleMode from "./ToggleMode";
-import colorScheme from "../utils";
+import colorScheme from "../utils/Pallete";
 import { NavLink } from "react-router-dom";
 import { BiCameraMovie } from "react-icons/bi";
 
@@ -18,7 +18,7 @@ export default function Navbar() {
                 <HStack spacing={20}>
                     <ListItem>
                         <NavLink to="/Movies">
-                            <ListIcon as={BiCameraMovie} boxSize="50px"/>
+                            <ListIcon as={BiCameraMovie} boxSize="50px" onClick="window.location.reload();"/>
                             Movies
                         </NavLink>
                     </ListItem>

@@ -1,7 +1,7 @@
 
 import {Button, useColorMode} from "@chakra-ui/react"
 import {SunIcon, MoonIcon} from "@chakra-ui/icons"
-import colorScheme from "../utils"
+import colorScheme from "../utils/Pallete"
 
 export default function ToggleMode() {
 
