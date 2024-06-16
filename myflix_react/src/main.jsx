@@ -9,13 +9,13 @@ const style = {
   colors:{
     dark:{
       primary: '#457b9d',
-      secondary: '#f28482',
-      accent: '#9381ff' 
+      secondary: '#81A263',
+      accent: '#615EFC'
     },
     light: {
       primary: '#a2d2ff',
-      secondary: '#ffc8dd',
-      accent: '#b8b8ff' 
+      secondary: '#81A263',
+      accent: '#9381ff' 
     }
   }
 }

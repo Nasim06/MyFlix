@@ -11,6 +11,10 @@ import Landing from './pages/Landing'
 import Movies from './pages/Movies'
 import Profile from './pages/Profile'
 import MyList from './pages/MyList'
+import SignIn from './pages/SignIn'
+import Register from './pages/Register'
+import { useState } from 'react'
+import SignedInContext from './utils/SignedInContext'
 
 // router and routes
 const router = createBrowserRouter(
@@ -18,15 +22,25 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Landing />} />
       <Route path="Movies" element={<Movies />} />
-      <Route path="Profile" element={<Profile />} />
       <Route path="MyList" element={<MyList />} />
+      <Route path="Profile" element={<Profile />} />
+      <Route path="SignIn" element={<SignIn />} />
+      <Route path="Register" element={<Register />} />
     </Route>
   )
 )
 
 function App() {
+
+  const [signedIn, setSignedIn] = useState(false);
+  const handleSignIn = (isLoggedIn) => {
+    setSignedIn(isLoggedIn);
+  };
+
   return (
-    <RouterProvider router={router} />
+    <SignedInContext.Provider value={{ signedIn, setSignedIn: handleSignIn }}>
+      <RouterProvider router={router} />
+    </SignedInContext.Provider>
   )
 }
 

@@ -11,28 +11,30 @@ class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter] 
-    search_fields = ['title'] 
 
     def get_queryset(self):
         queryset = self.queryset
 
+        title = self.request.GET.get('title', None)
         genre = self.request.GET.get('genre', None)
         actor = self.request.GET.get('actor', None)
         director = self.request.GET.get('director', None)
-        released_after = self.request.GET.get('released_after', None)
+        released = self.request.GET.get('released', None)
         imdb_rating_gte = self.request.GET.get('imdb_rating_gte', None)
         runtime_lte = self.request.GET.get('runtime_lte', None)
- 
-        if genre:
+
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+        if genre and genre != "All":
             queryset = queryset.filter(genre__name=genre)
         if actor:
-            queryset = queryset.filter(actors__name=actor)
+            queryset = queryset.filter(actors__name__icontains = actor)
         if director:
-            queryset = queryset.filter(director=director)
-        if released_after:
+            queryset = queryset.filter(director__icontains = director)
+        if released:
             try:
-                released_after = int(released_after)
-                queryset = queryset.filter(released__gte=released_after)
+                released = int(released)
+                queryset = queryset.filter(released=released)
             except ValueError:
                 pass  
         if imdb_rating_gte:

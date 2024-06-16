@@ -1,9 +1,12 @@
-import {Box, Card, CardBody, CardHeader, HStack, Heading, Image, SimpleGrid, Spacer, Text} from '@chakra-ui/react'
+import { Button, Card, HStack, SimpleGrid, Text } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import colorScheme from "../utils/Pallete";
+import colorScheme from "../utils/ColorScheme";
 import { ArrowBackIcon, ArrowForwardIcon, ArrowLeftIcon } from '@chakra-ui/icons';
 import { useSearchParams } from 'react-router-dom';
-import {BuildQuery, FetchMovieData} from '../utils/FetchMovieData'
+import { FetchMovieData } from '../utils/FetchMovieData'
+import { PageForward, PageBackward, BackToPageOne } from '../utils/Pagination';
+import MovieFilter from '../components/MovieFilter';
+import MovieList from '../components/MovieList';
 
 export default function Movies() {
 
@@ -15,64 +18,43 @@ export default function Movies() {
   const [actors, setActors] = useState(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const movieUrl = BuildQuery(searchParams);
+  //const movieUrl = BuildQuery(searchParams);
+  const movieUrl = "http://127.0.0.1:8000/api/movies?" + searchParams;
 
   useEffect(() => {
     const fetchData = async () => {
-      await FetchMovieData(movieUrl, setMovies, setGenres, setActors, setIsLoading);
-    }
-    fetchData();
-  }, []);
+      const data = await FetchMovieData(movieUrl);
+      if (data) {
+        setMovies(data.movies);
+        setGenres(data.genres);
+        setActors(data.actors);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    };
 
+    fetchData();
+  }, [movieUrl]);
 
 
   return (
-    <SimpleGrid spacing={5} minChildWidth="650px" p="20px" bg={colorscheme[1]}>
+    <SimpleGrid spacing={5} minChildWidth="650px" p="20px">
 
-      <Box h="200px">
-        <Heading>Filter:</Heading>  
-      </Box>
+      <MovieFilter setParams={setSearchParams} params={searchParams} />
 
-      <Box h="50px">
+      <Card h="100px" justify="center" bg={colorscheme[0]} border="5px solid" borderColor={colorscheme[2]}>
         <HStack justify="center">
-          <ArrowLeftIcon boxSize="40px" mr="20px"/>
-          <ArrowBackIcon boxSize="50px" mr="20px"/>
-          <ArrowForwardIcon boxSize="50px" />
+          <Button leftIcon={<ArrowLeftIcon boxSize="40px" mr="20px" />} onClick={() => BackToPageOne(searchParams, setSearchParams)} ></Button>
+          <Button leftIcon={<ArrowBackIcon boxSize="50px" mr="20px" />} onClick={() => PageBackward(searchParams, setSearchParams)} ></Button>
+          <Button leftIcon={<ArrowForwardIcon boxSize="50px" />} onClick={() => PageForward(searchParams, setSearchParams)} ></Button>
         </HStack>
-      </Box>
+      </Card>
 
-      {movies && movies.results.map(movie =>(
-        <Card key={movie.id} direction={{ base: 'column', sm: 'row' }} 
-        bg={colorscheme[0]} h="196" variant="outline" overflow="hidden">
-
-          <Image src={movie.poster} w="134px" h="196px" objectFit="cover" alt="movie poster"/>
-
-          <CardHeader w="300px">
-            <Heading size="md">{movie.title}</Heading>
-            <Text> Genres: 
-            {genres && movie.genre.map(genre =>(
-              " " + genres[genre-1].name + ", "
-            ))}
-            </Text>
-            <Text>Runtime: {movie.runtime} mins</Text>
-            <Text>Released: {movie.released}</Text>
-            <Text>IMDB Rating: {movie.imdb_rating}</Text>
-          </CardHeader>
-
-          <CardBody>
-            <Text>Overview: {movie.overview}</Text>
-            <Text> Actors: 
-            {actors && movie.actors.map(actor =>(
-              " " + actors[actor-1].name + ", "
-            ))}
-            </Text>
-          </CardBody>
-
-        </Card>
-      ))}
+      {isLoading ? (<Text>Loading...</Text>) : 
+      (<MovieList movies={movies} genres={genres} actors={actors} />)}
 
     </SimpleGrid>
-    
   )
 
 }
