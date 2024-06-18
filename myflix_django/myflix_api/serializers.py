@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Actor, Genre
+from .models import Movie, Actor, Genre, WatchList
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,3 +21,8 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta():
         model = Genre
         fields = ['name']
+
+class WatchListSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = WatchList
+        fields = ['id', 'movie', 'watched']

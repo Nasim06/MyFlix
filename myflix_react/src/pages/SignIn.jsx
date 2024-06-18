@@ -1,10 +1,12 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Flex, FormLabel, Input } from "@chakra-ui/react";
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Card, CardBody, CardHeader, Flex, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { Form, useNavigate } from "react-router-dom";
 import SignedInContext from "../utils/SignedInContext";
+import colorScheme from "../utils/ColorScheme";
 
 export default function SignIn() {
 
+    const colorscheme = colorScheme();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -50,29 +52,33 @@ export default function SignIn() {
 
     return (
         <Flex justify="center">
-            <Box h="500px" w="400px" p="40px">
-                <Form onSubmit={handleSubmit}>
+            <Card h="400px" w="350px" p="20px" mt="40px" bg={colorscheme[0]}>
+                <CardHeader>
+                    <Heading>Sign In</Heading>
+                </CardHeader>
 
-                    <FormLabel>Username:</FormLabel>
-                    <Input value={username} 
-                    onChange={(e) => setUsername(e.target.value)}/>
+                <CardBody>
+                    <Form onSubmit={handleSubmit}>
+                        <FormLabel>Username:</FormLabel>
+                        <Input value={username} 
+                        onChange={(e) => setUsername(e.target.value)}/>
 
-                    <FormLabel mt="20px">Password:</FormLabel>
-                    <Input value={password} 
-                    onChange={(e) => setPassword(e.target.value)}/>
+                        <FormLabel mt="20px">Password:</FormLabel>
+                        <Input value={password} 
+                        onChange={(e) => setPassword(e.target.value)}/>
 
-                    <Button type="submit" mt="30px" ml="100px">Submit</Button>
+                        <Button type="submit" mt="40px" ml="90px">Submit</Button>
 
-                    {showAlert && (
-                        <Alert status='error'>
-                        <AlertIcon />
-                        <AlertTitle>Error!</AlertTitle>
-                        <AlertDescription>Email/ Password Did Not Matched.</AlertDescription>
-                        </Alert>
-                    )}
-
-                </Form>
-            </Box>
+                        {showAlert && (
+                            <Alert status='error' mt="70px">
+                                <AlertIcon />
+                                <AlertTitle>Error!</AlertTitle>
+                                <AlertDescription>Email/ Password Did Not Matched.</AlertDescription>
+                            </Alert>
+                        )}
+                    </Form>
+                </CardBody>
+            </Card>
         </Flex>
     )
 }

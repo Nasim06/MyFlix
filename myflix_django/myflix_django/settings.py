@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e^oc_$ewjkew4+3^my7=y)!ylpe9lc33-x5!9sa=oe+-ge580('
+SECRET_KEY = local_settings.secretKey
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -170,7 +170,7 @@ DJOSER = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('JWT', 'Bearer'),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',

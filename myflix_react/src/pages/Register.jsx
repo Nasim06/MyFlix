@@ -1,9 +1,11 @@
-import { Box, Button, Flex, FormLabel, Input, useToast } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardHeader, Flex, FormLabel, Heading, Input, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
+import colorScheme from "../utils/ColorScheme";
 
 export default function Register() {
 
+    const colorscheme = colorScheme();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -45,21 +47,27 @@ export default function Register() {
 
     return (
         <Flex justify="center">
-            <Box h="500px" w="400px" p="40px">
-                <Form onSubmit={handleSubmit}>
+            <Card h="400px" w="350px" p="20px" mt="40px" bg={colorscheme[0]}>
+                <CardHeader>
+                    <Heading>
+                        Register
+                    </Heading>
+                </CardHeader>
 
-                    <FormLabel>Username:</FormLabel>
-                    <Input value={username} 
-                    onChange={(e) => setUsername(e.target.value)}/>
+                <CardBody>
+                    <Form onSubmit={handleSubmit}>
+                        <FormLabel>Username:</FormLabel>
+                        <Input value={username} 
+                        onChange={(e) => setUsername(e.target.value)}/>
 
-                    <FormLabel mt="20px">Password:</FormLabel>
-                    <Input value={password} 
-                    onChange={(e) => setPassword(e.target.value)}/>
+                        <FormLabel mt="20px">Password:</FormLabel>
+                        <Input value={password} 
+                        onChange={(e) => setPassword(e.target.value)}/>
 
-                    <Button type="submit" mt="30px" ml="100px">Submit</Button>
-
-                </Form>
-            </Box>
+                        <Button type="submit" mt="40px" ml="90px">Submit</Button>
+                    </Form>
+                </CardBody>
+            </Card>
         </Flex>
     )
 }

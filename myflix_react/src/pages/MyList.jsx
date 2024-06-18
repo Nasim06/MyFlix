@@ -1,17 +1,15 @@
-import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 
     
 export default function MyList() {
   return (
-    <div>
-
-      <Tabs>
+    <Box display="flex" justifyContent="center" mt="30px">
+      <Tabs w="80vw">
         <TabList>
           <Tab>Watch List</Tab>
           <Tab>Watched</Tab>
         </TabList>
       </Tabs>
-
-    </div>
+    </Box>
   )
 }

@@ -75,7 +75,6 @@ export default function MovieFilter(props) {
             + "&imdb_rating_gte=" + formData.rating + "&runtime_lte=" + formData.runtime;
 
         props.setParams(params);
-        window.location.reload();
     }
 
 

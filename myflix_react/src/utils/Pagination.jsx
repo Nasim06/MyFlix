@@ -8,7 +8,6 @@ export const PageForward = (searchParams, setSearchParams) => {
         searchParams.append("page", "2");
         setSearchParams(searchParams); 
     }
-    window.location.reload();
 }
 
 export const PageBackward = (searchParams, setSearchParams) => {
@@ -17,7 +16,6 @@ export const PageBackward = (searchParams, setSearchParams) => {
         searchParams.set("page", String(Number(page) - 1));
         setSearchParams(searchParams); 
     }
-    window.location.reload();
 }
 
 export const BackToPageOne = (searchParams, setSearchParams) => {
@@ -26,5 +24,4 @@ export const BackToPageOne = (searchParams, setSearchParams) => {
         searchParams.delete("page");
         setSearchParams(searchParams);
     }
-    window.location.reload();
 }
