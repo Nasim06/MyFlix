@@ -58,7 +58,7 @@ export default function Navbar() {
                         </Button>
                     </ListItem>
                     <ListItem>
-                    <Button size="lg" bg={colorscheme[2]} leftIcon={<CiBoxList />} onClick={() => navigate("/MyList")}>
+                    <Button size="lg" bg={colorscheme[2]} leftIcon={<CiBoxList />} onClick={() => navigate("/MyLists")}>
                             My List
                         </Button>
                     </ListItem>

@@ -1,9 +1,13 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, filters, permissions, status
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from .models import Movie, Genre, Actor, WatchList
 from .serializers import MovieSerializer, GenreSerializer, ActorSerializer, WatchListSerializer
 
+
+class NoPagination(PageNumberPagination):
+    page_size = None
 
 class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all()
@@ -57,19 +61,18 @@ class MovieListView(generics.ListAPIView):
 class GenreListView(generics.ListAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    pagination_class = NoPagination
 
 
 
 class ActorListView(generics.ListAPIView):
-    def get(self, request):
-        actors = Actor.objects.all()
-        serializer = ActorSerializer(actors, many=True)
-        return Response(serializer.data)
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
+    pagination_class = NoPagination
     
-    
+
 
 class UserWatchListMixin(object):
-
     #Mixin to filter WatchList items based on the authenticated user.
     permission_classes = [permissions.IsAuthenticated]
 
@@ -78,7 +81,6 @@ class UserWatchListMixin(object):
 
 
 class WatchListListAPIView(UserWatchListMixin, generics.ListAPIView):
-
     #Generic view to list movies in a user's watchlist, optionally filtered by watched status.
     serializer_class = WatchListSerializer
 
@@ -91,7 +93,6 @@ class WatchListListAPIView(UserWatchListMixin, generics.ListAPIView):
 
 
 class WatchListCreateAPIView(UserWatchListMixin, generics.CreateAPIView):
-
     #Generic view to create a new WatchList entry for the authenticated user.
     serializer_class = WatchListSerializer
 
@@ -111,17 +112,14 @@ class WatchListCreateAPIView(UserWatchListMixin, generics.CreateAPIView):
 
 
 class WatchListDetailAPIView(UserWatchListMixin, generics.RetrieveUpdateDestroyAPIView):
-
     #Generic view to retrieve, update, or delete a specific WatchList entry for the authenticated user.
     serializer_class = WatchListSerializer
 
     def get_queryset(self, *args, **kwargs):
- 
         #Limit queryset to the authenticated user's WatchList entries.
         return super().get_queryset(*args, **kwargs)
 
     def patch(self, request, pk=None, *args, **kwargs):
-
         #Patch a specific WatchList entry (update watched status).
         watchlist_item = self.get_object()
         serializer = self.get_serializer(watchlist_item, data=request.data, partial=True)
@@ -130,7 +128,6 @@ class WatchListDetailAPIView(UserWatchListMixin, generics.RetrieveUpdateDestroyA
         return Response(serializer.data)
 
     def delete(self, request, pk=None, *args, **kwargs):
-
         #Delete a specific WatchList entry for the authenticated user.
         watchlist_item = self.get_object()
         watchlist_item.delete()

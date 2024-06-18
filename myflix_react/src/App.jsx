@@ -10,7 +10,7 @@ import RootLayout from './layouts/RootLayout'
 import Landing from './pages/Landing'
 import Movies from './pages/Movies'
 import Profile from './pages/Profile'
-import MyList from './pages/MyList'
+import MyLists from './pages/MyLists'
 import SignIn from './pages/SignIn'
 import Register from './pages/Register'
 import { useState } from 'react'
@@ -22,7 +22,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Landing />} />
       <Route path="Movies" element={<Movies />} />
-      <Route path="MyList" element={<MyList />} />
+      <Route path="MyLists" element={<MyLists />} />
       <Route path="Profile" element={<Profile />} />
       <Route path="SignIn" element={<SignIn />} />
       <Route path="Register" element={<Register />} />
