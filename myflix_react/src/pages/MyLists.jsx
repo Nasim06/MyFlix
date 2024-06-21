@@ -1,11 +1,11 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import WatchList from "../components/WatchList";
+import MyListsMovies from "../components/MyListsMovies";
 
     
 export default function MyList() {
   return (
     <Box display="flex" justifyContent="center" mt="30px">
-      <Tabs w="80vw">
+      <Tabs w="90vw">
         <TabList>
           <Tab>Watch List</Tab>
           <Tab>Watched</Tab>
@@ -13,10 +13,10 @@ export default function MyList() {
 
         <TabPanels>
           <TabPanel>
-            <WatchList />
+            <MyListsMovies watched={"false"} />
           </TabPanel>
           <TabPanel>
-            
+            <MyListsMovies watched={"true"}/>
           </TabPanel>
         </TabPanels>
 

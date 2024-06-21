@@ -52,7 +52,7 @@ export default function Movies() {
       </Card>
 
       {isLoading ? (<Text>Loading...</Text>) : 
-      (<MovieList movies={movies} genres={genres} actors={actors} />)}
+      (<MovieList movies={movies.results} genres={genres} actors={actors} pageName={"movies"} />)}
 
     </SimpleGrid>
   )

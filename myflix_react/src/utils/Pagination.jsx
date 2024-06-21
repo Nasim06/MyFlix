@@ -12,7 +12,7 @@ export const PageForward = (searchParams, setSearchParams) => {
 
 export const PageBackward = (searchParams, setSearchParams) => {
     let page = searchParams.get("page");
-    if (page && page >= 1){
+    if (page && page > 1){
         searchParams.set("page", String(Number(page) - 1));
         setSearchParams(searchParams); 
     }

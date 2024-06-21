@@ -4,10 +4,12 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .models import Movie, Genre, Actor, WatchList
 from .serializers import MovieSerializer, GenreSerializer, ActorSerializer, WatchListSerializer
+from rest_framework.views import APIView
 
 
 class NoPagination(PageNumberPagination):
     page_size = None
+
 
 class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all()
@@ -51,10 +53,26 @@ class MovieListView(generics.ListAPIView):
                 runtime_lte = float(runtime_lte)
                 queryset = queryset.filter(runtime__lte=runtime_lte)
             except ValueError:
-                pass   
-
+                pass 
 
         return queryset
+    
+
+
+class MovieListByIdsView(APIView):
+    serializer_class = MovieSerializer
+
+    def post(self, request):
+        try:
+            movie_ids = request.data.get('movie_ids')
+            if not movie_ids or not isinstance(movie_ids, list):
+                return Response({'error': 'Invalid request format. Please provide a list of movie IDs.'}, status=status.HTTP_400_BAD_REQUEST)
+        except (KeyError, ValueError):
+            return Response({'error': 'Invalid request format. Please provide a list of movie IDs.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = Movie.objects.filter(id__in=movie_ids)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 
@@ -78,6 +96,12 @@ class UserWatchListMixin(object):
 
     def get_queryset(self):
         return WatchList.objects.filter(user=self.request.user)
+    
+    def has_permission(self, request, obj=None):
+        if obj is None:
+            return True
+        return obj.user == request.us
+
 
 
 class WatchListListAPIView(UserWatchListMixin, generics.ListAPIView):
@@ -90,6 +114,7 @@ class WatchListListAPIView(UserWatchListMixin, generics.ListAPIView):
         if watched:
             queryset = queryset.filter(watched=watched)
         return queryset
+
 
 
 class WatchListCreateAPIView(UserWatchListMixin, generics.CreateAPIView):
@@ -111,12 +136,12 @@ class WatchListCreateAPIView(UserWatchListMixin, generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+
 class WatchListDetailAPIView(UserWatchListMixin, generics.RetrieveUpdateDestroyAPIView):
     #Generic view to retrieve, update, or delete a specific WatchList entry for the authenticated user.
     serializer_class = WatchListSerializer
 
     def get_queryset(self, *args, **kwargs):
-        #Limit queryset to the authenticated user's WatchList entries.
         return super().get_queryset(*args, **kwargs)
 
     def patch(self, request, pk=None, *args, **kwargs):

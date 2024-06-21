@@ -1,22 +1,16 @@
 
 export const FetchWatchList = async (watched, token) => {
-    console.log(token);
     let url = "http://127.0.0.1:8000/api/watchlist"
-    if(watched == "True"){
+    if(watched == "true"){
         url += "?watched=True"
     } else{
         url += "?watched=False"
     }
-
-    // const requestOptions = {
-    //     method: "GET",
-    //     headers: { Authorization: "JWT" + token },
-    // };
+    console.log(url);
 
     try{
         const response = await fetch(url, {headers: {Authorization: 'JWT ' + token}});
         const data = await response.json();
-        console.log(data);
         return data;
     } catch (error){
         console.error(error);
@@ -29,7 +23,8 @@ export const AddToWatchList = async (movie_id, watched, token) => {
     const url = "http://127.0.0.1:8000/api/watchlist/create"
     const requestOptions = {
         method: "POST",
-        headers: { Authorization: "JWT" + token },
+        headers: {Authorization: "JWT " + token,
+            'Content-Type': 'application/json'},
         body: JSON.stringify({
             movie: movie_id,
             watched: watched,
@@ -50,11 +45,12 @@ export const AddToWatchList = async (movie_id, watched, token) => {
 }
 
 
-export const MoveToWatched = async (watchListId, watched, token) => {
+export const patchWatched = async (watchListId, watched, token) => {
     const url = "http://127.0.0.1:8000/api/watchlist/" + watchListId
     const requestOptions = {
         method: "PATCH",
-        headers: { Authorization: "JWT" + token },
+        headers: {Authorization: "JWT " + token,
+            'Content-Type': 'application/json'},
         body: JSON.stringify({
             watched: watched,
         }),
@@ -78,7 +74,8 @@ export const DeleteFromList = async (watchListId, token) => {
     const url = "http://127.0.0.1:8000/api/watchlist/" + watchListId
     const requestOptions = {
         method: "DELETE",
-        headers: { Authorization: "JWT" + token },
+        headers: {Authorization: "JWT " + token,
+            'Content-Type': 'application/json'},
     };
 
     try{
