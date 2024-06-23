@@ -1,18 +1,59 @@
-import React from 'react';
-import { Button, Card, CardBody, CardFooter, CardHeader, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Heading, Image, Text, VStack, useToast } from '@chakra-ui/react';
 import colorScheme from '../utils/ColorScheme';
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 import { AddToWatchList, patchWatched, DeleteFromList } from '../utils/MyListDataMethods';
+import SignedInContext from "../utils/SignedInContext";
 
 const MovieList = ({ movies, genres, actors, pageName, idData }) => {
     const colorscheme = colorScheme();
-
+    const toast = useToast();
     const token = localStorage.getItem("accessToken");
+    const {signedIn, setSignedIn} = useContext(SignedInContext);
+
+
+    const AddMovie = async (id, bool, token) =>{
+        const response = await AddToWatchList(id, bool, token);
+        if (response == "Success"){
+            toast({
+                title: 'Success', description: "Movie added to your watch list",
+                status: 'success', duration: 3000, isClosable: true,
+              })
+        }else if(response == "Conflict"){
+            toast({
+                title: 'Conflict', description: "Movie already in you watch list",
+                status: 'info', duration: 3000, isClosable: true,
+            })
+        }
+        else{
+            toast({
+                title: 'Failed', description: "Something went wrong", 
+                status: 'error', duration: 3000, isClosable: true,
+              })
+        }
+    }   
+
+
+    const DeleteMovie = async (id, token) =>{
+        const response = await DeleteFromList(id, token);
+        if (response == "Success"){
+            toast({
+                title: 'Success', description: "Movie removed from list",
+                status: 'success', duration: 3000, isClosable: true,
+              })
+        }else{
+            toast({
+                title: 'Failed', description: "Something went wrong",
+                status: 'error', duration: 3000, isClosable: true,
+              })
+        }
+    }   
+
 
     const footer = (movieId) => {
-        if(pageName == "movies"){
+        if(pageName == "movies" && signedIn){
             return(
-                <Button size="lg" bg={colorscheme[2]} onClick={() => AddToWatchList(movieId, "False", token)} >
+                <Button size="lg" bg={colorscheme[2]} onClick={() => AddMovie(movieId, "False", token) } >
                     <AddIcon />
                 </Button>
             )
@@ -23,7 +64,7 @@ const MovieList = ({ movies, genres, actors, pageName, idData }) => {
                     <Button size="lg" bg={colorscheme[2]} onClick={() => patchWatched(idData[movieId], "True", token)} >
                         <AddIcon />
                     </Button>
-                    <Button size="lg" bg={colorscheme[2]} onClick={() => DeleteFromList(idData[movieId], token)} >
+                    <Button size="lg" bg={colorscheme[2]} onClick={() => DeleteMovie(idData[movieId], token)} >
                         <CloseIcon />
                     </Button>
                 </ VStack>
@@ -31,12 +72,12 @@ const MovieList = ({ movies, genres, actors, pageName, idData }) => {
         }
         if(pageName == "watched"){
             return(
-                <Button size="lg" bg={colorscheme[2]} onClick={() => DeleteFromList(idData[movieId], token)} >
+                <Button size="lg" bg={colorscheme[2]} onClick={() => DeleteMovie(idData[movieId], token)} >
                     <CloseIcon />
                 </Button>
             )
         }
-        
+        return(<></>)
     }
 
 

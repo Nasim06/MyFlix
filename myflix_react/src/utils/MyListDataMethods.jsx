@@ -1,3 +1,5 @@
+import { useToast } from "@chakra-ui/react";
+
 
 export const FetchWatchList = async (watched, token) => {
     let url = "http://127.0.0.1:8000/api/watchlist"
@@ -34,9 +36,12 @@ export const AddToWatchList = async (movie_id, watched, token) => {
     try{
         const response = await fetch(url, requestOptions);
         if(response.ok){
-            return "Added to Watch List"
-        }else {
-            return "Failed to add to Watch List"
+            return "Success"
+        } else if(response.status == 409){
+            return "Conflict"
+        }
+        else {
+            return "Failed"
         }
     } catch (error){
         console.error(error);
@@ -81,9 +86,9 @@ export const DeleteFromList = async (watchListId, token) => {
     try{
         const response = await fetch(url, requestOptions);
         if(response.ok){
-            return "Removed from List"
+            return "Success"
         }else {
-            return "Failed to remove"
+            return "Failed"
         }
     } catch (error){
         console.error(error);

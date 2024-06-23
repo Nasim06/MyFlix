@@ -1,4 +1,4 @@
-import { Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { FetchWatchList } from "../utils/MyListDataMethods";
 import { FetchMoviesWithIds } from "../utils/FetchMovieData";
@@ -22,6 +22,9 @@ export default function MyListsMovies(props) {
     }
 
     let token = "";
+    let moviesData = "";
+    let actorsData = "";
+    let genresData = "";
 
     useEffect(() => {
         const fetchWatchListData = async () => {
@@ -39,9 +42,9 @@ export default function MyListsMovies(props) {
                     if(movieIds){
                         const movieData = await FetchMoviesWithIds(movieIds);
                         if(movieData){
-                            setMovies(movieData.movies);
-                            setGenres(movieData.genres);
-                            setActors(movieData.actors);
+                            moviesData = movieData.movies;
+                            actorsData = movieData.actors;
+                            genresData = movieData.genres;
                         }
                     }
                 }
@@ -55,6 +58,9 @@ export default function MyListsMovies(props) {
         }
         if(token) {
             fetchWatchListData();
+            setMovies(moviesData);
+            setGenres(genresData);
+            setActors(actorsData);
         } else{
             setSignedIn(false);
         }

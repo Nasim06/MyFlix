@@ -32,11 +32,12 @@ export default function Navbar() {
                     console.log(data.username);
                     setUsername(data.username);
                 }else{
+                    localStorage.removeItem("accessToken");
                     setSignedIn(false);
                     return;
                 }
             } catch(error){
-                console.log(error);
+                console.log("Not logged in");
             }
         };
         fetchUserData();
