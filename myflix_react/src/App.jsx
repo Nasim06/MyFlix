@@ -9,7 +9,6 @@ import {
 import RootLayout from './layouts/RootLayout'
 import Landing from './pages/Landing'
 import Movies from './pages/Movies'
-import Profile from './pages/Profile'
 import MyLists from './pages/MyLists'
 import SignIn from './pages/SignIn'
 import Register from './pages/Register'
@@ -23,7 +22,6 @@ const router = createBrowserRouter(
       <Route index element={<Landing />} />
       <Route path="Movies" element={<Movies />} />
       <Route path="MyLists" element={<MyLists />} />
-      <Route path="Profile" element={<Profile />} />
       <Route path="SignIn" element={<SignIn />} />
       <Route path="Register" element={<Register />} />
     </Route>

@@ -107,6 +107,7 @@ class UserWatchListMixin(object):
 class WatchListListAPIView(UserWatchListMixin, generics.ListAPIView):
     #Generic view to list movies in a user's watchlist, optionally filtered by watched status.
     serializer_class = WatchListSerializer
+    pagination_class = NoPagination
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)

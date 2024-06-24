@@ -43,7 +43,7 @@ export default function SignIn() {
             console.log(data.access);
             console.log(data.refresh);
             setSignedIn(true);
-            navigate("/Profile");
+            navigate("/MyLists");
 
         }catch(error){
             console.log(error);

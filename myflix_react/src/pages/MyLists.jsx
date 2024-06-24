@@ -5,7 +5,7 @@ import MyListsMovies from "../components/MyListsMovies";
 export default function MyList() {
   return (
     <Box display="flex" justifyContent="center" mt="30px">
-      <Tabs w="90vw">
+      <Tabs w="90vw" isLazy variant="enclosed">
         <TabList>
           <Tab>Watch List</Tab>
           <Tab>Watched</Tab>

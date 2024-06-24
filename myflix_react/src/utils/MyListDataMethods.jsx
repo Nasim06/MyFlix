@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 
 
 export const FetchWatchList = async (watched, token) => {
@@ -8,7 +7,6 @@ export const FetchWatchList = async (watched, token) => {
     } else{
         url += "?watched=False"
     }
-    console.log(url);
 
     try{
         const response = await fetch(url, {headers: {Authorization: 'JWT ' + token}});
@@ -64,9 +62,9 @@ export const patchWatched = async (watchListId, watched, token) => {
     try{
         const response = await fetch(url, requestOptions);
         if(response.ok){
-            return "Moved Successfully"
+            return "Success"
         }else {
-            return "Failed to move"
+            return "Failed"
         }
     } catch (error){
         console.error(error);

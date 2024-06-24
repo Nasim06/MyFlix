@@ -5,7 +5,7 @@ import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 import { AddToWatchList, patchWatched, DeleteFromList } from '../utils/MyListDataMethods';
 import SignedInContext from "../utils/SignedInContext";
 
-const MovieList = ({ movies, genres, actors, pageName, idData }) => {
+const MovieList = ({ movies, genres, actors, pageName, idData, setRefresh }) => {
     const colorscheme = colorScheme();
     const toast = useToast();
     const token = localStorage.getItem("accessToken");
@@ -41,6 +41,7 @@ const MovieList = ({ movies, genres, actors, pageName, idData }) => {
                 title: 'Success', description: "Movie removed from list",
                 status: 'success', duration: 3000, isClosable: true,
               })
+            setRefresh(true);
         }else{
             toast({
                 title: 'Failed', description: "Something went wrong",
@@ -50,10 +51,27 @@ const MovieList = ({ movies, genres, actors, pageName, idData }) => {
     }   
 
 
+    const PatchMovie = async (id, token) =>{
+        const response = await patchWatched(id, "True", token);
+        if (response == "Success"){
+            toast({
+                title: 'Success', description: "Movie moved to Watched",
+                status: 'success', duration: 3000, isClosable: true,
+              })
+            setRefresh(true);
+        }else{
+            toast({
+                title: 'Failed', description: "Something went wrong",
+                status: 'error', duration: 3000, isClosable: true,
+              })
+        }
+    } 
+
+
     const footer = (movieId) => {
         if(pageName == "movies" && signedIn){
             return(
-                <Button size="lg" bg={colorscheme[2]} onClick={() => AddMovie(movieId, "False", token) } >
+                <Button size="lg" bg={colorscheme[1]} _hover={{bg:colorscheme[2]}} onClick={() => AddMovie(movieId, "False", token) } >
                     <AddIcon />
                 </Button>
             )
@@ -61,10 +79,10 @@ const MovieList = ({ movies, genres, actors, pageName, idData }) => {
         if(pageName == "watchList"){
             return(
                 <VStack>
-                    <Button size="lg" bg={colorscheme[2]} onClick={() => patchWatched(idData[movieId], "True", token)} >
+                    <Button size="lg" bg={colorscheme[1]} _hover={{bg:colorscheme[2]}} onClick={() => PatchMovie(idData[movieId], token)} >
                         <AddIcon />
                     </Button>
-                    <Button size="lg" bg={colorscheme[2]} onClick={() => DeleteMovie(idData[movieId], token)} >
+                    <Button size="lg" bg={colorscheme[1]} _hover={{bg:colorscheme[2]}} onClick={() => DeleteMovie(idData[movieId], token)} >
                         <CloseIcon />
                     </Button>
                 </ VStack>
@@ -72,7 +90,7 @@ const MovieList = ({ movies, genres, actors, pageName, idData }) => {
         }
         if(pageName == "watched"){
             return(
-                <Button size="lg" bg={colorscheme[2]} onClick={() => DeleteMovie(idData[movieId], token)} >
+                <Button size="lg" bg={colorscheme[1]} _hover={{bg:colorscheme[2]}} onClick={() => DeleteMovie(idData[movieId], token)} >
                     <CloseIcon />
                 </Button>
             )

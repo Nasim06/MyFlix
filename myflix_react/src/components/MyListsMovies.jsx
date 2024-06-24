@@ -6,13 +6,13 @@ import SignedInContext from "../utils/SignedInContext";
 import MovieList from '../components/MovieList';
 
 export default function MyListsMovies(props) {
-
     const {signedIn, setSignedIn} = useContext(SignedInContext);
     const [isLoading, setIsLoading] = useState(false);
     const [movies, setMovies] = useState(null);
     const [genres, setGenres] = useState(null);
     const [actors, setActors] = useState(null);
     const [idData, setIdData] = useState(null);
+    const [refresh, setRefresh] = useState(null);
 
     let pagename = "";
     if(props.watched == "false"){
@@ -22,31 +22,31 @@ export default function MyListsMovies(props) {
     }
 
     let token = "";
-    let moviesData = "";
-    let actorsData = "";
-    let genresData = "";
 
     useEffect(() => {
         const fetchWatchListData = async () => {
             setIsLoading(true);
             try{
                 const watchListData = await FetchWatchList(props.watched, token);
-                if(watchListData.count != 0){
-                    const idDict = watchListData.results.reduce((acc, item) => {
+                console.log("watchListData: " + watchListData);
+                if(watchListData != ""){
+                    const idDict = watchListData.reduce((acc, item) => {
                         acc[item.movie] = item.id;
                         return acc;
                       }, {});
                     setIdData(idDict);
-                    console.log(idDict);
-                    const movieIds = watchListData.results.map((item) => item.movie);
+                    console.log("idDict: "+ idDict);
+                    const movieIds = watchListData.map((item) => item.movie);
                     if(movieIds){
                         const movieData = await FetchMoviesWithIds(movieIds);
                         if(movieData){
-                            moviesData = movieData.movies;
-                            actorsData = movieData.actors;
-                            genresData = movieData.genres;
+                            setMovies(movieData.movies);
+                            setGenres(movieData.genres);
+                            setActors(movieData.actors);
                         }
                     }
+                }else{
+                    setMovies(null);
                 }
             } catch(error){
                 console.log(error);
@@ -58,20 +58,20 @@ export default function MyListsMovies(props) {
         }
         if(token) {
             fetchWatchListData();
-            setMovies(moviesData);
-            setGenres(genresData);
-            setActors(actorsData);
+            if(refresh){
+                setRefresh(false);
+            }
         } else{
             setSignedIn(false);
         }
-    },[signedIn]);
+    },[signedIn, refresh]);
 
 
     return (
         <SimpleGrid spacing={5} minChildWidth="800px" p="20px">
             {!signedIn ? (<Text>You need to be signed in</Text>) :
             isLoading ? (<Text>Loading...</Text>) : 
-            movies ? (<MovieList movies={movies} genres={genres} actors={actors} pageName={pagename} idData={idData}/>) : 
+            movies != null ? (<MovieList movies={movies} genres={genres} actors={actors} pageName={pagename} idData={idData} setRefresh={setRefresh} />) :
                 (<Text>Nothing to see here</Text>)}
         </SimpleGrid>
       );
