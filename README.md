@@ -68,7 +68,3 @@ npm run dev
 If successfull you should be met with this landing page:
 ![myflix_landing](https://github.com/Nasim06/MyFlix/assets/79113348/2c72d200-55ac-4bc4-be56-3b7c3e475be4)
 
-
-## Disclaimer
-It is possible that I wrote some of those steps incorrectly, but it shouldn't be too hard to figure out what's wrong if you've used Django and React before.
-
